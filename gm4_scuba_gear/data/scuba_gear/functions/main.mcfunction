@@ -7,8 +7,7 @@ execute as @e[type=item,nbt={Item:{id:"minecraft:player_head",Count:1b,tag:{Skul
 
 # reset scores and tags
 scoreboard players reset @a gm4_sg_swim
-execute as @a[tag=gm4_in_water] unless entity @s[nbt={Inventory:[{Slot:103b,tag:{gm4_scuba_gear:{item:"helmet"}}},{Slot:102b,tag:{gm4_scuba_gear:{item:"tank"}}}]}] run function scuba_gear:remove_effect
-execute as @a[tag=gm4_in_water] at @s unless block ~ ~1 ~ water unless block ~ ~1 ~ #scuba_gear:water_loggable[waterlogged=true] unless block ~ ~1 ~ #scuba_gear:seagrass run function scuba_gear:remove_effect
+execute as @a[tag=gm4_in_water] run function scuba_gear:check_gear
 
 #reward advancement
 advancement grant @a[gamemode=!spectator,nbt={Inventory:[{Slot:103b,tag:{gm4_scuba_gear:{item:"helmet"}}},{Slot:102b,tag:{gm4_scuba_gear:{item:"tank"}}},{Slot:100b,tag:{gm4_scuba_gear:{item:"flippers"}}}]}] only gm4:scuba_gear
