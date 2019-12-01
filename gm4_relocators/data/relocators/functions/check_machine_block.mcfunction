@@ -11,5 +11,4 @@ execute at @e[tag=gm4_relocating_ray] align xyz store result score location gm4_
 scoreboard players remove location gm4_rl_data 1
 execute at @e[tag=gm4_relocating_ray] align xyz positioned ~0.5 ~-1 ~0.5 run function relocators:found_machine
 
-
 kill @e[tag=gm4_relocated_ray]
