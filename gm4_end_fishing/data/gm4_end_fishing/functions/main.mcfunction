@@ -2,7 +2,7 @@ execute as @e[type=minecraft:armor_stand,tag=gm4_fishing_bait] at @s run functio
 
 #enderpuff mechanics
 execute as @a[tag=gm4_has_enderpuff] run function gm4_end_fishing:enderpuff/process
-effect clear @a[tag=gm4_enderpuff_fall,predicate=!gm4_end_fishing:enderpuff_equipped] levitation
+effect clear @a[tag=gm4_enderpuff_fall,tag=!gm4_has_enderpuff] levitation
 scoreboard players reset @a gm4_ef_sneak
 
 #fix enderpuff head
