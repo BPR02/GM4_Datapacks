@@ -19,7 +19,7 @@ DOC_URL = f"https://docs.google.com/spreadsheets/d/{DOC_ID}/gviz/tq?tqx=out:csv&
 
 def create_tree(min, max, folder, path,):
     def create_function(value, file):
-        json = '\'{"storage": "gm4_guidebook:register", "nbt": "modules[{page_number:' + str(value) + '}].module_name","color":"#4AA0C7","clickEvent":{"action":"change_page","value":"' + str(value) + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Jump to Section"},{"translate":"text.gm4.guidebook.jump_to_page"}],"color":"gold"}]}}\''
+        json = '\'{"storage": "gm4_guidebook:register", "nbt": "modules[{page_number:' + str(value) + '}].module_name","color":"#4AA0C7","clickEvent":{"action":"run_command","value":"' + f'/trigger gm4_guide set {value}' + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Jump to Section"},{"translate":"text.gm4.guidebook.jump_to_page"}],"color":"gold"}]}}\''
         file.write(f"execute if score $page gm4_guide matches {value} run data modify block 29999998 1 7133 Text1 set value {json}\n")
 
     def branch(min, max, folder, path, file):
@@ -148,11 +148,11 @@ def generate_init(module):
         f.close()
 
     if module_type == "expansion":
-        summon = '# guidebook\nexecute if score gm4_guidebook load.status matches 1 run summon marker ~ ' + str(num_id) + ' ~ {CustomName:\'"gm4_' + module_id + '_guide"\',Tags:["gm4_guide"],data:{type:"_expansion",base:"' + base_module + '",id:"' + module_id + '",page_count:' + str(page_count) + ',line_count:' + str(line_count) + ',module_name:"' + module_name + '"}}'
+        summon = '# guidebook\nexecute if score gm4_guidebook load.status matches 1 run summon marker ~ ' + str(num_id) + ' ~ {CustomName:\'"gm4_' + module_id + '_guide"\',Tags:["gm4_guide"],data:{type:"_expansion",base:"' + base_module + '",id:"' + module_id + '",page_count:' + str(1) + ',line_count:' + str(line_count) + ',module_name:"' + module_name + '"}}'
     elif module_type == "base":
-        summon = '# guidebook\nexecute if score gm4_guidebook load.status matches 1 run summon marker ~ ' + str(num_id) + ' ~ {CustomName:\'"gm4_' + module_id + '_guide"\',Tags:["gm4_guide"],data:{type:"' + module_type + '",expansions:[],id:"' + module_id + '",page_count:' + str(page_count) + ',line_count:' + str(line_count) + ',module_name:"' + module_name + '"}}'
+        summon = '# guidebook\nexecute if score gm4_guidebook load.status matches 1 run summon marker ~ ' + str(num_id) + ' ~ {CustomName:\'"gm4_' + module_id + '_guide"\',Tags:["gm4_guide"],data:{type:"' + module_type + '",expansions:[],id:"' + module_id + '",page_count:' + str(0) + ',line_count:' + str(line_count) + ',module_name:"' + module_name + '"}}'
     else:
-        summon = '# guidebook\nexecute if score gm4_guidebook load.status matches 1 run summon marker ~ ' + str(num_id) + ' ~ {CustomName:\'"gm4_' + module_id + '_guide"\',Tags:["gm4_guide"],data:{type:"' + module_type + '",id:"' + module_id + '",page_count:' + str(page_count) + ',line_count:' + str(line_count) + ',module_name:"' + module_name + '"}}'
+        summon = '# guidebook\nexecute if score gm4_guidebook load.status matches 1 run summon marker ~ ' + str(num_id) + ' ~ {CustomName:\'"gm4_' + module_id + '_guide"\',Tags:["gm4_guide"],data:{type:"' + module_type + '",id:"' + module_id + '",page_count:' + str(0) + ',line_count:' + str(line_count) + ',module_name:"' + module_name + '"}}'
 
     f = open(file,'r')
     filedata = f.read()
@@ -213,12 +213,45 @@ def generate_verify(module):
     filedata = f.read()
     f.close()
 
-    command = header + 'execute if data storage gm4_guidebook:temp module{id:"' + module_id + '"} run function gm4_' + module_id + ':guidebook/add_pages\n'
+    command = header + f'execute if score {module_id} gm4_guide = @s gm4_guide run function gm4_' + module_id + ':guidebook/add_pages\n'
     newdata = filedata.replace(header, command)
 
     f = open(filename,'w')
     f.write(newdata)
     f.close()
+
+generated_get_id = []
+def generate_get_id(module):
+    [module_id, module_name, wiki_link, load_id, module_type, base_module, initial_json, initial_pages, unlockable_pages, page_count, num_id, line_count, done, initial_lock] = module
+
+    filename = "gm4_" + load_id + "/data/gm4_" + load_id + "/functions/guidebook/get_id.mcfunction"
+    header = '# saves the id for this module\n'
+
+    if load_id not in generated_get_id:
+        generated_get_id.append(load_id)
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+        with open(filename, "w") as file:
+            file.write(header)
+
+    f = open(filename,'r')
+    filedata = f.read()
+    f.close()
+
+    command = header + f'execute if data storage gm4_guidebook:temp_analyze module{{id:"{module_id}"}} run scoreboard players operation {module_id} gm4_guide = $page_count gm4_guide\n'
+    newdata = filedata.replace(header, command)
+
+    f = open(filename,'w')
+    f.write(newdata)
+    f.close()
+
+def generate_function_tag2(module):
+    [module_id, module_name, wiki_link, load_id, module_type, base_module, initial_json, initial_pages, unlockable_pages, page_count, num_id, line_count, done, initial_lock] = module
+    path = "gm4_" + load_id + "/data/gm4_guidebook/tags/functions/get_id"
+
+    json = {"values": []}
+    json["values"].append(f"gm4_{load_id}:guidebook/get_id")
+    write_json(path, json)
 
 
 def generate_add_pages(module):
@@ -241,23 +274,23 @@ def generate_add_pages(module):
             initial_pages = initial_pages + ',\'["",{"text":"???","hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Undiscovered"},{"translate":"text.gm4.guidebook.undiscovered"}],"italic":true,"color":"red"}]}}]\''
 
     if module_type == "expansion":
-        pages = '[\'["",{"text":"◀ ","color":"#4AA0C7","clickEvent":{"action":"change_page","value":"2"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Back"},{"translate":"text.gm4.guidebook.back"}],"color":"#4AA0C7","clickEvent":{"action":"change_page","value":"2"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n"},{"text":"☶ ","color":"#864BC7","bold":true,"clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Wiki"},{"translate":"text.gm4.guidebook.wiki"}],"color":"#864BC7","clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n\\\\n"},{"text":"' + module_name + '","underlined":true},{"text":"\\\\n"}' + initial_json + ']\'' + initial_pages + ']'
+        pages = '[\'["",{"text":"◀ ","color":"#4AA0C7","clickEvent":{"action":"run_command","value":"/trigger gm4_guide set -1"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Back"},{"translate":"text.gm4.guidebook.back"}],"color":"#4AA0C7","clickEvent":{"action":"run_command","value":"/trigger gm4_guide set -1"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n"},{"text":"☶ ","color":"#864BC7","bold":true,"clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Wiki"},{"translate":"text.gm4.guidebook.wiki"}],"color":"#864BC7","clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n\\\\n"},{"text":"' + module_name + '","underlined":true},{"text":"\\\\n"}' + initial_json + ']\'' + initial_pages + ']'
     else:
-        pages = '[\'\',\'["",{"text":"◀ ","color":"#4AA0C7","clickEvent":{"action":"change_page","value":"2"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Back"},{"translate":"text.gm4.guidebook.back"}],"color":"#4AA0C7","clickEvent":{"action":"change_page","value":"2"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n"},{"text":"☶ ","color":"#864BC7","bold":true,"clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Wiki"},{"translate":"text.gm4.guidebook.wiki"}],"color":"#864BC7","clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n\\\\n"},{"text":"' + module_name + '","underlined":true},{"text":"\\\\n"}' + initial_json + ']\'' + initial_pages + ']'
+        pages = '[\'\',\'["",{"text":"◀ ","color":"#4AA0C7","clickEvent":{"action":"run_command","value":"/trigger gm4_guide set -1"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Back"},{"translate":"text.gm4.guidebook.back"}],"color":"#4AA0C7","clickEvent":{"action":"run_command","value":"/trigger gm4_guide set -1"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n"},{"text":"☶ ","color":"#864BC7","bold":true,"clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Wiki"},{"translate":"text.gm4.guidebook.wiki"}],"color":"#864BC7","clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n\\\\n"},{"text":"' + module_name + '","underlined":true},{"text":"\\\\n"}' + initial_json + ']\'' + initial_pages + ']'
     
     filename = "gm4_" + load_id + "/data/gm4_" + module_id + "/functions/guidebook/add_pages.mcfunction"
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    with open(filename, "w") as file:
+    with open(filename, "w", encoding="utf-8") as file:
         if not initial_lock:
             contents = '# adds pages to the guidebook\n# @s = player who\'s updating their guidebook\n# located at @s\n# run from gm4_' + module_id + ':guidebook/verify_module\n\ndata modify storage gm4_guidebook:temp insert set value ' + pages + '\n\n# unlockable pages'
         else:
             advancement = 'gm4_guidebook:' + module_id + '/page_0=true'
             locked_json = '{"text":"???","hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Undiscovered"},{"translate":"text.gm4.guidebook.undiscovered"}],"italic":true,"color":"red"}]}}'
             if module_type == "expansion":
-                locked_page = '[\'["",{"text":"◀ ","color":"#4AA0C7","clickEvent":{"action":"change_page","value":"2"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Back"},{"translate":"text.gm4.guidebook.back"}],"color":"#4AA0C7","clickEvent":{"action":"change_page","value":"2"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n"},{"text":"☶ ","color":"#864BC7","bold":true,"clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Wiki"},{"translate":"text.gm4.guidebook.wiki"}],"color":"#864BC7","clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n\\\\n"},{"text":"' + module_name + '","underlined":true},{"text":"\\\\n"},' + locked_json + ']\'' + initial_pages + ']'
+                locked_page = '[\'["",{"text":"◀ ","color":"#4AA0C7","clickEvent":{"action":"run_command","value":"/trigger gm4_guide set -1"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Back"},{"translate":"text.gm4.guidebook.back"}],"color":"#4AA0C7","clickEvent":{"action":"run_command","value":"/trigger gm4_guide set -1"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n"},{"text":"☶ ","color":"#864BC7","bold":true,"clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Wiki"},{"translate":"text.gm4.guidebook.wiki"}],"color":"#864BC7","clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n\\\\n"},{"text":"' + module_name + '","underlined":true},{"text":"\\\\n"},' + locked_json + ']\'' + initial_pages + ']'
             else:
-                locked_page = '[\'\',\'["",{"text":"◀ ","color":"#4AA0C7","clickEvent":{"action":"change_page","value":"2"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Back"},{"translate":"text.gm4.guidebook.back"}],"color":"#4AA0C7","clickEvent":{"action":"change_page","value":"2"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n"},{"text":"☶ ","color":"#864BC7","bold":true,"clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Wiki"},{"translate":"text.gm4.guidebook.wiki"}],"color":"#864BC7","clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n\\\\n"},{"text":"' + module_name + '","underlined":true},{"text":"\\\\n"},' + locked_json + ']\'' + initial_pages + ']'
+                locked_page = '[\'\',\'["",{"text":"◀ ","color":"#4AA0C7","clickEvent":{"action":"run_command","value":"/trigger gm4_guide set -1"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Back"},{"translate":"text.gm4.guidebook.back"}],"color":"#4AA0C7","clickEvent":{"action":"run_command","value":"/trigger gm4_guide set -1"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Return to Table of Contents"},{"translate":"text.gm4.guidebook.return_to_table"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n"},{"text":"☶ ","color":"#864BC7","bold":true,"clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"translate":"%1$s%3427655$s","with":[{"text":"Wiki"},{"translate":"text.gm4.guidebook.wiki"}],"color":"#864BC7","clickEvent":{"action":"open_url","value":"' + wiki_link + '"},"hoverEvent":{"action":"show_text","contents":[{"translate":"%1$s%3427655$s","with":[{"text":"Open External Wiki"},{"translate":"text.gm4.guidebook.open_wiki"}],"italic":true,"color":"gold"}]}},{"text":"\\\\n\\\\n"},{"text":"' + module_name + '","underlined":true},{"text":"\\\\n"},' + locked_json + ']\'' + initial_pages + ']'
             contents = '# adds pages to the guidebook\n# @s = player who\'s updating their guidebook\n# located at @s\n# run from gm4_' + module_id + ':guidebook/verify_module\n\nexecute unless entity @s[advancements={' + advancement + '}] run data modify storage gm4_guidebook:temp insert set value ' + locked_page + '\nexecute if entity @s[advancements={' + advancement + '}] run data modify storage gm4_guidebook:temp insert set value ' + pages + '\n\n# unlockable pages'
         file.write(contents + "\n")
         for i, page in enumerate(unlockable_pages):
@@ -275,5 +308,7 @@ for module in module_data:
         generate_root_advancement(module)
         generate_unlock_tellraw(module)
         generate_verify(module)
+        generate_function_tag2(module)
+        generate_get_id(module)
         if not done:
             generate_add_pages(module)

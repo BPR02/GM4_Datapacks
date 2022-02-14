@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"vertical_rails"} run function gm4_vertical_rails:guidebook/add_pages
+execute if score vertical_rails gm4_guide = @s gm4_guide run function gm4_vertical_rails:guidebook/add_pages

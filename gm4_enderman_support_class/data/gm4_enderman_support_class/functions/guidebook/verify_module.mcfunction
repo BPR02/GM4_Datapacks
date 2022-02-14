@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"enderman_support_class"} run function gm4_enderman_support_class:guidebook/add_pages
+execute if score enderman_support_class gm4_guide = @s gm4_guide run function gm4_enderman_support_class:guidebook/add_pages

@@ -3,5 +3,5 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"standard_liquids"} run function gm4_standard_liquids:guidebook/add_pages
-execute if data storage gm4_guidebook:temp module{id:"liquid_tanks"} run function gm4_liquid_tanks:guidebook/add_pages
+execute if score standard_liquids gm4_guide = @s gm4_guide run function gm4_standard_liquids:guidebook/add_pages
+execute if score liquid_tanks gm4_guide = @s gm4_guide run function gm4_liquid_tanks:guidebook/add_pages

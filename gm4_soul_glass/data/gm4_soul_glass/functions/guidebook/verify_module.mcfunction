@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"soul_glass"} run function gm4_soul_glass:guidebook/add_pages
+execute if score soul_glass gm4_guide = @s gm4_guide run function gm4_soul_glass:guidebook/add_pages

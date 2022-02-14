@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"heart_canisters"} run function gm4_heart_canisters:guidebook/add_pages
+execute if score heart_canisters gm4_guide = @s gm4_guide run function gm4_heart_canisters:guidebook/add_pages

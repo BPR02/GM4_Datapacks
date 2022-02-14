@@ -3,5 +3,5 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"desire_lines"} run function gm4_desire_lines:guidebook/add_pages
-execute if data storage gm4_guidebook:temp module{id:"celaro_shamir"} run function gm4_celaro_shamir:guidebook/add_pages
+execute if score desire_lines gm4_guide = @s gm4_guide run function gm4_desire_lines:guidebook/add_pages
+execute if score celaro_shamir gm4_guide = @s gm4_guide run function gm4_celaro_shamir:guidebook/add_pages

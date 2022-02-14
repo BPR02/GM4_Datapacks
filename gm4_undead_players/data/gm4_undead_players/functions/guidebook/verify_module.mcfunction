@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"undead_players"} run function gm4_undead_players:guidebook/add_pages
+execute if score undead_players gm4_guide = @s gm4_guide run function gm4_undead_players:guidebook/add_pages

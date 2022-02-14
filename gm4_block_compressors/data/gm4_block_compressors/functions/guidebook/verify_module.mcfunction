@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"block_compressors"} run function gm4_block_compressors:guidebook/add_pages
+execute if score block_compressors gm4_guide = @s gm4_guide run function gm4_block_compressors:guidebook/add_pages

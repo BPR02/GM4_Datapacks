@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"display_frames"} run function gm4_display_frames:guidebook/add_pages
+execute if score display_frames gm4_guide = @s gm4_guide run function gm4_display_frames:guidebook/add_pages

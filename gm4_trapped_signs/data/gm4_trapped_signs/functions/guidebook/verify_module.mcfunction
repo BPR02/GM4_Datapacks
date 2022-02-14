@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"trapped_signs"} run function gm4_trapped_signs:guidebook/add_pages
+execute if score trapped_signs gm4_guide = @s gm4_guide run function gm4_trapped_signs:guidebook/add_pages

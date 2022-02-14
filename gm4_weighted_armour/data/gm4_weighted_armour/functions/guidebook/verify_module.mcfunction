@@ -3,5 +3,5 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"weighted_armour"} run function gm4_weighted_armour:guidebook/add_pages
-execute if data storage gm4_guidebook:temp module{id:"helious_shamir"} run function gm4_helious_shamir:guidebook/add_pages
+execute if score weighted_armour gm4_guide = @s gm4_guide run function gm4_weighted_armour:guidebook/add_pages
+execute if score helious_shamir gm4_guide = @s gm4_guide run function gm4_helious_shamir:guidebook/add_pages

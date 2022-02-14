@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"chest_boats"} run function gm4_chest_boats:guidebook/add_pages
+execute if score chest_boats gm4_guide = @s gm4_guide run function gm4_chest_boats:guidebook/add_pages

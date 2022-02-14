@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"scuba_gear"} run function gm4_scuba_gear:guidebook/add_pages
+execute if score scuba_gear gm4_guide = @s gm4_guide run function gm4_scuba_gear:guidebook/add_pages
