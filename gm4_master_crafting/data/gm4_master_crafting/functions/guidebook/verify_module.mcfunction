@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"master_crafting"} run function gm4_master_crafting:guidebook/add_pages
+execute if score master_crafting gm4_guide = @s gm4_guide run function gm4_master_crafting:guidebook/add_pages

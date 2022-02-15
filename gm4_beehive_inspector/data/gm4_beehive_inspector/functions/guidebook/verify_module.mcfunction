@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"beehive_inspector"} run function gm4_beehive_inspector:guidebook/add_pages
+execute if score beehive_inspector gm4_guide = @s gm4_guide run function gm4_beehive_inspector:guidebook/add_pages

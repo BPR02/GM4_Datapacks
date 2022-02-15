@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"particles_pack"} run function gm4_particles_pack:guidebook/add_pages
+execute if score particles_pack gm4_guide = @s gm4_guide run function gm4_particles_pack:guidebook/add_pages

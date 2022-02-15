@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"ender_hoppers"} run function gm4_ender_hoppers:guidebook/add_pages
+execute if score ender_hoppers gm4_guide = @s gm4_guide run function gm4_ender_hoppers:guidebook/add_pages

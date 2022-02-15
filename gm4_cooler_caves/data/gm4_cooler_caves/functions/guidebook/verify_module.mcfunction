@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"cooler_caves"} run function gm4_cooler_caves:guidebook/add_pages
+execute if score cooler_caves gm4_guide = @s gm4_guide run function gm4_cooler_caves:guidebook/add_pages

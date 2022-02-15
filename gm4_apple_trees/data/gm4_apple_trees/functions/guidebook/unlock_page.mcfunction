@@ -3,4 +3,4 @@
 # located at @s
 # run from advancement gm4_guidebook:apple_trees/page_<number>
 
-tellraw @s ["",{"selector":"@s"},{"text":" "},{"translate":"%1$s%3427655$s","with":[{"text":"has discovered a guidebook page from"},{"translate":"%1$s%3427655$s","with":[{"translate":"text.gm4.guidebook.discovered"}]}]},{"text":" "},{"text":"[Apple Trees]","color":"#4AA0C7","hoverEvent":{"action":"show_text","contents":[{"text":"Apple Trees","color":"#4AA0C7"},{"text":"\n"},{"text":"Simply Apple Trees!","italic":true,"color":"gray"}]}}]
+tellraw @s ["",{"selector":"@s"},{"text":" "},{"translate":"%1$s%3427655$s","with":[{"text":"has discovered a guidebook page from"},{"translate":"%1$s%3427655$s","with":[{"translate":"text.gm4.guidebook.discovered"}]}]},{"text":" "},{"text":"[Apple Trees]","color":"#4AA0C7","hoverEvent":{"action":"show_text","contents":[{"text":"Apple Trees","color":"#4AA0C7"},{"text":"\n"},{"text":"Introduces fruit-bearing apple trees! Trade for apple saplings with wandering traders or commenly find these lifesavers in forests if you have Orbis installed.","italic":true,"color":"gray"}]}}]

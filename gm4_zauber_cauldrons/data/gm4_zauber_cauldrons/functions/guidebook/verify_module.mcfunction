@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"zauber_cauldrons"} run function gm4_zauber_cauldrons:guidebook/add_pages
+execute if score zauber_cauldrons gm4_guide = @s gm4_guide run function gm4_zauber_cauldrons:guidebook/add_pages

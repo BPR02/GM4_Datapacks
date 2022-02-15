@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"mending_tanks"} run function gm4_mending_tanks:guidebook/add_pages
+execute if score mending_tanks gm4_guide = @s gm4_guide run function gm4_mending_tanks:guidebook/add_pages

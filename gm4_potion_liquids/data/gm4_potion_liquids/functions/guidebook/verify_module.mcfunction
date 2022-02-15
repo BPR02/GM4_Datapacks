@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"potion_liquids"} run function gm4_potion_liquids:guidebook/add_pages
+execute if score potion_liquids gm4_guide = @s gm4_guide run function gm4_potion_liquids:guidebook/add_pages

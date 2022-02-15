@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"liquid_minecarts"} run function gm4_liquid_minecarts:guidebook/add_pages
+execute if score liquid_minecarts gm4_guide = @s gm4_guide run function gm4_liquid_minecarts:guidebook/add_pages

@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"pig_tractors"} run function gm4_pig_tractors:guidebook/add_pages
+execute if score pig_tractors gm4_guide = @s gm4_guide run function gm4_pig_tractors:guidebook/add_pages

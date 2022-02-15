@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"podzol_rooting_soil"} run function gm4_podzol_rooting_soil:guidebook/add_pages
+execute if score podzol_rooting_soil gm4_guide = @s gm4_guide run function gm4_podzol_rooting_soil:guidebook/add_pages

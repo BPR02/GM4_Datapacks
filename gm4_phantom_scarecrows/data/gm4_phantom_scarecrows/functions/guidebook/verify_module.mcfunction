@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"phantom_scarecrows"} run function gm4_phantom_scarecrows:guidebook/add_pages
+execute if score phantom_scarecrows gm4_guide = @s gm4_guide run function gm4_phantom_scarecrows:guidebook/add_pages

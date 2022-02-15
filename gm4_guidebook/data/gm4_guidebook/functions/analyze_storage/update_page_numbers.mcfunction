@@ -6,8 +6,8 @@
 # add initial page count (intro + table of contents) to the page number
 data modify storage gm4_guidebook:temp module set from storage gm4_guidebook:temp modules[-1]
 execute store result score $page_number gm4_guide run data get storage gm4_guidebook:temp module.page_number
-scoreboard players operation $page_number gm4_guide += $front_matter gm4_guide
-execute if data storage gm4_guidebook:temp module{type:"expansion"} run scoreboard players remove $page_number gm4_guide 1
+# scoreboard players operation $page_number gm4_guide += $front_matter gm4_guide
+# execute if data storage gm4_guidebook:temp module{type:"expansion"} run scoreboard players remove $page_number gm4_guide 1
 execute store result storage gm4_guidebook:temp module.page_number int 1 run scoreboard players get $page_number gm4_guide
 
 # put into permanent storage

@@ -3,4 +3,4 @@
 # located at @s
 # run from advancement gm4_guidebook:book_binders/page_<number>
 
-tellraw @s ["",{"selector":"@s"},{"text":" "},{"translate":"%1$s%3427655$s","with":[{"text":"has discovered a guidebook page from"},{"translate":"%1$s%3427655$s","with":[{"translate":"text.gm4.guidebook.discovered"}]}]},{"text":" "},{"text":"[Book Binders]","color":"#4AA0C7","hoverEvent":{"action":"show_text","contents":[{"text":"Book Binders","color":"#4AA0C7"},{"text":"\n"},{"text":"Start printing your own Enchanted Books","italic":true,"color":"gray"}]}}]
+tellraw @s ["",{"selector":"@s"},{"text":" "},{"translate":"%1$s%3427655$s","with":[{"text":"has discovered a guidebook page from"},{"translate":"%1$s%3427655$s","with":[{"translate":"text.gm4.guidebook.discovered"}]}]},{"text":" "},{"text":"[Book Binders]","color":"#4AA0C7","hoverEvent":{"action":"show_text","contents":[{"text":"Book Binders","color":"#4AA0C7"},{"text":"\n"},{"text":"Start printing your own Enchanted Books with Book Binders. Use lecterns to exract singular pages from Enchanted Books and recombine pages with Leather to create your own Enchanted Books -- free of charge!","italic":true,"color":"gray"}]}}]

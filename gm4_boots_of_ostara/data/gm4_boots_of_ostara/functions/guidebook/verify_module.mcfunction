@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"boots_of_ostara"} run function gm4_boots_of_ostara:guidebook/add_pages
+execute if score boots_of_ostara gm4_guide = @s gm4_guide run function gm4_boots_of_ostara:guidebook/add_pages

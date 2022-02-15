@@ -3,4 +3,4 @@
 # located at @s
 # run from #gm4_guidebook:add_pages
 
-execute if data storage gm4_guidebook:temp module{id:"animi_shamir"} run function gm4_animi_shamir:guidebook/add_pages
+execute if score animi_shamir gm4_guide = @s gm4_guide run function gm4_animi_shamir:guidebook/add_pages
