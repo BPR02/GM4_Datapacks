@@ -1,9 +1,6 @@
 block_checks = []
 
-MIN = -2032
-MAX = 2032
-
-for y in range(MIN, MAX):
+for y in range(1, 4064):
   block_checks.append({
     "condition": "minecraft:any_of",
     "terms": [
@@ -11,7 +8,7 @@ for y in range(MIN, MAX):
         "condition": "minecraft:inverted",
         "term": {
           "condition": "minecraft:location_check",
-          "offsetY": MAX-y,
+          "offsetY": y,
           "predicate": {
             "light": {
               "light": {
@@ -24,17 +21,7 @@ for y in range(MIN, MAX):
       },
       {
         "condition": "minecraft:location_check",
-        "predicate": {
-          "position": {
-            "y": {
-              "min": y
-            }
-          }
-        }
-      },
-      {
-        "condition": "minecraft:location_check",
-        "offsetY": MAX-y,
+        "offsetY": y,
         "predicate": {
           "block": {
             "blocks": "#gm4_soul_glass:beacon_passable"
@@ -43,7 +30,7 @@ for y in range(MIN, MAX):
       },
       {
         "condition": "minecraft:location_check",
-        "offsetY": MAX-y,
+        "offsetY": y,
         "predicate": {
           "block": {
             "state": {
@@ -55,7 +42,7 @@ for y in range(MIN, MAX):
       },
       {
         "condition": "minecraft:location_check",
-        "offsetY": MAX-y,
+        "offsetY": y,
         "predicate": {
           "block": {
             "state": {
@@ -67,7 +54,7 @@ for y in range(MIN, MAX):
       },
       {
         "condition": "minecraft:location_check",
-        "offsetY": MAX-y,
+        "offsetY": y,
         "predicate": {
           "block": {
             "state": {
